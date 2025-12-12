@@ -76,7 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
     head.y = (head.y + ROWS) % ROWS;
 
     // collision with self
-    if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    const willEat = food && head.x === food.x && head.y === food.y;
+    const tail = snake[snake.length - 1];
+    const collisionWithBody = snake.some(s => s.x === head.x && s.y === head.y);
+    // allow moving into the current tail position if the snake will not grow (i.e., not eating)
+    if (collisionWithBody && !( !willEat && tail && tail.x === head.x && tail.y === head.y )) {
       stop();
       alert('Fim de jogo! Você bateu na sua cauda.');
       return;
@@ -94,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // eat food
     if (food && head.x === food.x && head.y === food.y) {
       placeFood();
-      score += 100;
+      score += 10;
       // advance level by score thresholds: 1000, 2000, 3000...
       if (score >= level * 1000) {
         if (level < MAX_LEVEL) {
