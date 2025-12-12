@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let snake = [{ x: Math.floor(COLS/2), y: Math.floor(ROWS/2) }];
   let dir = { x: 1, y: 0 };
+  let nextDir = { x: 1, y: 0 };
   let food = null;
   let running = false;
   let paused = false;
@@ -70,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function step() {
     if (!running || paused) return;
+    // apply queued direction once per step to prevent multiple quick turns
+    dir = nextDir;
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
     // wall wrap
     head.x = (head.x + COLS) % COLS;
@@ -185,10 +188,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // keyboard
   document.addEventListener('keydown', (e) => {
     const key = e.key;
-    if (['ArrowUp','w','W'].includes(key) && dir.y === 0) { dir = { x:0, y:-1 }; }
-    if (['ArrowDown','s','S'].includes(key) && dir.y === 0) { dir = { x:0, y:1 }; }
-    if (['ArrowLeft','a','A'].includes(key) && dir.x === 0) { dir = { x:-1, y:0 }; }
-    if (['ArrowRight','d','D'].includes(key) && dir.x === 0) { dir = { x:1, y:0 }; }
+    // compute desired direction
+    let desired = null;
+    if (['ArrowUp','w','W'].includes(key)) desired = { x:0, y:-1 };
+    if (['ArrowDown','s','S'].includes(key)) desired = { x:0, y:1 };
+    if (['ArrowLeft','a','A'].includes(key)) desired = { x:-1, y:0 };
+    if (['ArrowRight','d','D'].includes(key)) desired = { x:1, y:0 };
+    if (!desired) return;
+    // prevent reversing: desired must not be opposite of current dir
+    if (desired.x === -dir.x && desired.y === -dir.y) return;
+    // queue it — will be applied at start of next step
+    nextDir = desired;
   });
 
   // UI hooks
