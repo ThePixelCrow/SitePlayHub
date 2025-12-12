@@ -104,6 +104,31 @@
             <h2>Últimas Notícias</h2>
             <div class="news-grid" id="newsGrid">
                 <!-- News populated by JavaScript -->
+
+                <!-- Mini Game Section -->
+                <section id="game" class="game">
+                    <div class="container">
+                        <h2>PlayHub Arcade - Pac-Man Game</h2>
+                        <div class="game-container">
+                            <div class="game-info-top">
+                                <div class="game-stat">
+                                    <span>Pontos:</span>
+                                    <span id="score">0</span>
+                                </div>
+                                <div class="game-stat">
+                                    <span>Nível:</span>
+                                    <span id="level">1</span>
+                                </div>
+                            </div>
+                            <canvas id="gameCanvas" width="400" height="400"></canvas>
+                            <div class="game-controls">
+                                <button onclick="startGame()" class="btn btn-primary">Iniciar Jogo</button>
+                                <button onclick="pauseGame()" class="btn btn-secondary">Pausar</button>
+                                <p class="game-instructions">Use as setas ⬆️ ⬅️ ➡️ ⬇️ ou WASD para controlar</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -213,5 +238,39 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="game.js"></script>
+    <!-- Ship mini-window trigger and modal -->
+    <button id="shipToggle" class="ship-toggle" aria-label="Abrir Ship">🚀</button>
+
+    <div id="shipModal" class="ship-modal" aria-hidden="true">
+        <div class="ship-window">
+            <button class="ship-close" id="shipClose" aria-label="Fechar">✕</button>
+            <h3>Space Shooter</h3>
+            <canvas id="shipCanvas" width="320" height="360"></canvas>
+            <div class="ship-controls">
+                <button onclick="startShip()" class="btn btn-primary">Iniciar</button>
+                <button onclick="pauseShip()" class="btn btn-secondary">Pausar</button>
+            </div>
+            <p style="font-size:12px;color:#9aa;">Use ← → para mover e Espaço para atirar.</p>
+        </div>
+    </div>
+
+    <!-- Snake mini-window trigger and modal -->
+    <button id="snakeToggle" class="snake-toggle" aria-label="Abrir Snake">🐍</button>
+
+    <div id="snakeModal" class="snake-modal" aria-hidden="true">
+        <div class="snake-window">
+            <button class="snake-close" id="snakeClose" aria-label="Fechar">✕</button>
+            <h3>Snake Mini</h3>
+            <canvas id="snakeCanvas" width="300" height="300"></canvas>
+            <div class="snake-controls">
+                <button onclick="startSnake()" class="btn btn-primary">Iniciar</button>
+                <button onclick="pauseSnake()" class="btn btn-secondary">Pausar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="snake.js"></script>
+    <script src="ship.js"></script>
 </body>
 </html>
