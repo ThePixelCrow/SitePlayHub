@@ -77,13 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // collision with self
     const willEat = food && head.x === food.x && head.y === food.y;
-    const tail = snake[snake.length - 1];
-    const collisionWithBody = snake.some(s => s.x === head.x && s.y === head.y);
-    // allow moving into the current tail position if the snake will not grow (i.e., not eating)
-    if (collisionWithBody && !( !willEat && tail && tail.x === head.x && tail.y === head.y )) {
-      stop();
-      alert('Fim de jogo! Você bateu na sua cauda.');
-      return;
+    // check collision against body; if not eating, the tail will move so ignore tail cell
+    const checkLen = willEat ? snake.length : Math.max(0, snake.length - 1);
+    for (let i = 0; i < checkLen; i++) {
+      if (snake[i].x === head.x && snake[i].y === head.y) {
+        stop();
+        alert('Fim de jogo! Você bateu na sua cauda.');
+        return;
+      }
     }
 
     // collision with obstacles
