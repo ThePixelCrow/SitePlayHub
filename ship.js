@@ -46,6 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (intervalId) { clearInterval(intervalId); intervalId = setInterval(step, speed); }
   }
 
+  function spawnWave(lv) {
+    // spawn uma nova onda de inimigos sem resetar jogador/score
+    enemies = [];
+    const rows = Math.min(2 + lv, 6);
+    const cols = Math.min(5 + lv, 12);
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        enemies.push({ x: c*2, y: r+1, w:1, h:1, alive:true });
+      }
+    }
+    enemyDir = 1;
+  }
+
   function draw() {
     ctx.fillStyle = '#07111a';
     ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -109,6 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     bullets = bullets.filter(b => !b.hit);
+
+    // se não há inimigos vivos e não atingiu meta da fase, gerar nova onda
+    if (!enemies.some(e => e.alive) && score < level * 1000) {
+      spawnWave(level);
+    }
 
     // check enemy reach player
     const anyEnemyTouchingPlayer = enemies.some(e => e.alive && e.y >= player.y);
